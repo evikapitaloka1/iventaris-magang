@@ -30,10 +30,34 @@
   </div>
 
   <nav class="sidebar-nav">
+    <!-- MENU UMUM: Bisa diakses semua role -->
     <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}" @if(request()->routeIs('dashboard')) aria-current="page" @endif>
       <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
       <span class="nav-text">Dashboard</span>
     </a>
+
+    <!-- MENU STAFF & ADMIN -->
+    @if(in_array(auth()->user()->role?->name, ['Admin', 'Staff']))
+    <a class="nav-link" href="#kelola-barang"> <!-- Ganti href sesuai route-mu -->
+      <span class="nav-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
+      <span class="nav-text">Kelola Barang</span>
+    </a>
+    <a class="nav-link" href="#peminjaman"> <!-- Ganti href sesuai route-mu -->
+      <span class="nav-icon"><i class="bi bi-arrow-left-right" aria-hidden="true"></i></span>
+      <span class="nav-text">Peminjaman</span>
+    </a>
+    @endif
+
+    <!-- MENU MANAGER & ADMIN -->
+    @if(in_array(auth()->user()->role?->name, ['Admin', 'Manager']))
+    <a class="nav-link" href="#laporan"> <!-- Ganti href sesuai route-mu -->
+      <span class="nav-icon"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span>
+      <span class="nav-text">Laporan</span>
+    </a>
+    @endif
+
+    <!-- MENU ADMIN ONLY (Manajemen User) -->
+    @if(auth()->user()->role?->name === 'Admin')
     <a class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}" href="{{ route('users.index') }}">
       <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
       <span class="nav-text">Users</span>
@@ -42,41 +66,12 @@
       <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
       <span class="nav-text">Add User</span>
     </a>
-   <a class="nav-link {{ request()->routeIs('users.profile') ? 'active' : '' }}"
-   href="{{ route('profile.index') }}">
-    <span class="nav-icon">
-        <i class="bi bi-person-badge" aria-hidden="true"></i>
-    </span>
-    <span class="nav-text">Profile</span>
-</a>
-    <a class="nav-link" href="charts.html">
-      <span class="nav-icon"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></span>
-      <span class="nav-text">Charts</span>
-    </a>
-    <a class="nav-link" href="tables.html">
-      <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
-      <span class="nav-text">Tables</span>
-    </a>
-    <a class="nav-link" href="forms.html">
-      <span class="nav-icon"><i class="bi bi-ui-checks-grid" aria-hidden="true"></i></span>
-      <span class="nav-text">Forms</span>
-    </a>
-    <a class="nav-link" href="components.html">
-      <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
-      <span class="nav-text">Components</span>
-    </a>
-    <a class="nav-link" href="alerts.html">
-      <span class="nav-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
-      <span class="nav-text">Alerts</span>
-    </a>
-    <a class="nav-link" href="modals.html">
-      <span class="nav-icon"><i class="bi bi-window-stack" aria-hidden="true"></i></span>
-      <span class="nav-text">Modals</span>
-    </a>
-  
-    <a class="nav-link" href="blank.html">
-      <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
-      <span class="nav-text">Blank Page</span>
+    @endif
+
+    <!-- MENU UMUM: Profil -->
+    <a class="nav-link {{ request()->routeIs('profile.index') ? 'active' : '' }}" href="{{ route('profile.index') }}">
+      <span class="nav-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
+      <span class="nav-text">Profile</span>
     </a>
   </nav>
 
@@ -86,10 +81,7 @@
     <small>{{ auth()->user()->role?->name ?? 'User' }}</small>
   </div>
 
-  <div class="sidebar-footer">
-    <span class="status-dot"></span>
-    <span class="sidebar-footer-text">System running smoothly</span>
-  </div>
+  
 </aside>
 
 <!-- AREA KONTEN UTAMA -->
@@ -139,8 +131,8 @@
             <i class="bi bi-gear" aria-hidden="true"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-            <li><a class="dropdown-item" href="settings.html">Account settings</a></li>
+            <li><a class="dropdown-item" href="{{ route('profile.index') }}">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Account settings</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>
               <form method="POST" action="{{ route('logout') }}">
