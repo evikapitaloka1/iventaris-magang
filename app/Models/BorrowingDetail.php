@@ -6,9 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class BorrowingDetail extends Model
 {
-    protected $fillable = ['borrowing_id', 'product_id', 'qty', 'item_status'];
+    protected $fillable = [
+        'borrowing_id',
+        'product_id',
+        'qty',
+        'item_status'
+    ];
 
-public function product() {
-    return $this->belongsTo(Product::class);
-}
+    public function borrowing()
+    {
+        return $this->belongsTo(Borrowing::class, 'borrowing_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }
