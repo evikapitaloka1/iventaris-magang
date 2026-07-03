@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BorrowingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // 1. Arahkan pengunjung awal langsung ke halaman login
@@ -13,7 +14,7 @@ Route::get('/', function () {
 
 // 2. Semua rute di dalam grup ini wajib login terlebih dahulu
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // Rute Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -28,6 +29,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Rute Profile (Bawaan instalasi Laravel Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // User Management
+    // PENTING: parameter wildcard di sini HARUS bernama {user} (bukan {id}),
+    // karena UserController pakai Route Model Binding: edit(User $user), update(Request $request, User $user), dst.
+    // Kalau namanya beda, Laravel gagal auto-resolve model dan $user akan jadi null.
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    // Rute Profile User (untuk melihat profile user lain)
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    // Jika menggunakan fungsi edit
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route untuk update (sesuai form Anda)
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

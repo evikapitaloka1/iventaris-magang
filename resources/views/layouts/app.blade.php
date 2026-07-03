@@ -16,18 +16,17 @@
 
 <div class="admin-shell">
 
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+
+    {{-- navigation.blade.php sudah berisi <aside> + <main class="admin-main"> lengkap
+         sampai @yield('content'), jadi cukup di-include saja tanpa wrapper tambahan --}}
     @include('layouts.navigation')
-
-    <div class="admin-main">
-
-        @yield('content')
-
-    </div>
 
 </div>
 
 <script src="{{ asset('template/assets/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('template/assets/js/main.js') }}"></script>
+@stack('scripts')
 
 </body>
 </html>

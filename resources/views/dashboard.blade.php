@@ -47,7 +47,7 @@
                     <tr>
                         <th class="text-muted">Role</th>
                         <td>
-                            <span class="badge text-bg-primary">{{ auth()->user()->role ?? 'No Role Assigned' }}</span>
+                            <span class="badge text-bg-primary">{{ auth()->user()->role?->name ?? 'No Role Assigned' }}</span>
                         </td>
                     </tr>
                 </table>
@@ -183,7 +183,9 @@
                     </h2>
                     <p class="text-muted mb-0">Latest account activity across the workspace.</p>
                 </div>
-                <a class="btn btn-outline-secondary btn-sm" href="users.html">Manage Users</a>
+                <a href="{{ route('users.index') }}" class="btn btn-outline-secondary btn-sm">
+    Manage Users
+</a>
             </div>
             <div class="table-responsive">
                 <table class="table align-middle mb-0">

@@ -11,7 +11,15 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
+    
+public function index(Request $request): View
+    {
+        return view('profile.index', [
+            'user' => $request->user(),
+        ]);
+    }
+
+/**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
@@ -26,15 +34,37 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        
+        // Mengisi data name dan email dari form
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Reset verifikasi jika email berubah
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        // Logika untuk upload dan simpan Avatar
+        if ($request->hasFile('avatar')) {
+            // Hapus avatar lama dari folder jika ada (agar penyimpanan tidak penuh)
+            if ($user->avatar && Storage::disk('public')->exists('avatars/' . $user->avatar)) {
+                Storage::disk('public')->delete('avatars/' . $user->avatar);
+            }
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+            // Buat nama file unik berdasarkan waktu saat ini
+            $avatarName = time() . '.' . $request->avatar->extension();
+            
+            // Simpan gambar ke folder storage/app/public/avatars
+            $request->avatar->storeAs('avatars', $avatarName, 'public');
+            
+            // Masukkan nama file ke dalam atribut user untuk disimpan ke database
+            $user->avatar = $avatarName;
+        }
+
+        // Simpan semua perubahan ke database
+        $user->save();
+
+        return Redirect::route('profile.index')->with('status', 'Profile updated successfully!');
     }
 
     /**
