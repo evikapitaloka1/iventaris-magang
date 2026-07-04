@@ -1,11 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-@include('profile.partials.low-stock-alert') 
+
+{{-- Tampilkan alert stok menipis HANYA UNTUK ADMIN --}}
+@if(auth()->user()->role?->name === 'Admin')
+    @include('profile.partials.low-stock-alert') 
+@endif
+
 <main class="dashboard-content">
     <div class="container-fluid px-3 px-lg-4 py-4">
 
-        <!-- 1. Page Heading -->
+        <!-- 1. Page Heading (Muncul untuk semua User) -->
         <div class="page-heading d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
             <div class="page-heading-copy d-flex align-items-center gap-3">
                 <span class="page-icon">
@@ -33,7 +38,7 @@
             </div>
         </div>
 
-        <!-- 2. Dynamic User Information Panel (Terbuka untuk Semua) -->
+        <!-- 2. Dynamic User Information Panel (Muncul untuk semua User) -->
         <div class="panel mb-4 shadow-sm bg-white rounded">
             <div class="panel-header border-bottom p-3">
                 <h2 class="h5 mb-0"><i class="bi bi-person-badge me-2"></i>User Information</h2>

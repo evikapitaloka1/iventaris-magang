@@ -38,13 +38,11 @@
 
     <!-- MENU STAFF & ADMIN -->
     @if(in_array(auth()->user()->role?->name, ['Admin', 'Staff']))
- <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}"
-   href="{{ route('products.index') }}">
+    <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">
       <span class="nav-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
       <span class="nav-text">Kelola Barang</span>
     </a>
-    <a class="nav-link {{ request()->routeIs('borrowings.*') ? 'active' : '' }}"
-   href="{{ route('borrowings.index') }}">
+    <a class="nav-link {{ request()->routeIs('borrowings.*') ? 'active' : '' }}" href="{{ route('borrowings.index') }}">
       <span class="nav-icon"><i class="bi bi-arrow-left-right" aria-hidden="true"></i></span>
       <span class="nav-text">Peminjaman</span>
     </a>
@@ -52,7 +50,7 @@
 
     <!-- MENU MANAGER & ADMIN -->
     @if(in_array(auth()->user()->role?->name, ['Admin', 'Manager']))
-    <a class="nav-link" href="#laporan"> <!-- Ganti href sesuai route-mu -->
+    <a class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}" href="{{ route('reports.index') }}">
       <span class="nav-icon"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span>
       <span class="nav-text">Laporan</span>
     </a>
@@ -76,14 +74,6 @@
       <span class="nav-text">Profile</span>
     </a>
   </nav>
-
-  <div class="sidebar-user">
-    <img class="avatar-img avatar-md sidebar-user-avatar" src="{{ auth()->user()->avatar_url ?? asset('template/assets/images/avatar/avatar.jpg') }}" alt="{{ auth()->user()->name }}">
-    <strong>{{ auth()->user()->name }}</strong>
-    <small>{{ auth()->user()->role?->name ?? 'User' }}</small>
-  </div>
-
-  
 </aside>
 
 <!-- AREA KONTEN UTAMA -->
@@ -106,28 +96,58 @@
         <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
           <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
         </button>
+        
+        <!-- DROPDOWN NOTIFIKASI -->
         <div class="dropdown">
-          <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
-            <span class="notification-dot"></span>
+          <button class="icon-button position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
             <i class="bi bi-bell" aria-hidden="true"></i>
+            
+            {{-- Titik merah indikator (hanya muncul jika ada notifikasi unread) --}}
+            @if(auth()->user()->unreadNotifications->count() > 0)
+                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                    <span class="visually-hidden">New alerts</span>
+                </span>
+            @endif
           </button>
-          <div class="dropdown-menu dropdown-menu-end notification-menu">
-            <div class="dropdown-header fw-bold text-body">Notifications</div>
-            <a class="dropdown-item" href="users.html">
-              <span class="notification-title">New user registered</span>
-              <span class="notification-time">4 minutes ago</span>
-            </a>
-            <a class="dropdown-item" href="charts.html">
-              <span class="notification-title">Revenue target reached</span>
-              <span class="notification-time">32 minutes ago</span>
-            </a>
-            <a class="dropdown-item" href="settings.html">
-              <span class="notification-title">Security review completed</span>
-              <span class="notification-time">1 hour ago</span>
-            </a>
+          
+          <div class="dropdown-menu dropdown-menu-end notification-menu shadow-sm" style="min-width: 250px;">
+            <!-- Header Notifikasi -->
+            <div class="dropdown-header fw-bold text-body d-flex justify-content-between align-items-center">
+                <span>Notifications</span>
+                @if(auth()->user()->unreadNotifications->count() > 0)
+                    <span class="badge bg-danger rounded-pill">{{ auth()->user()->unreadNotifications->count() }}</span>
+                @endif
+            </div>
+
+            <!-- Looping Notifikasi (Maksimal 5 terbaru) -->
+            @forelse(auth()->user()->unreadNotifications->take(5) as $notification)
+                <a class="dropdown-item border-bottom py-2 {{ $notification->unread() ? 'bg-light' : '' }}" 
+                   href="{{ $notification->data['url'] ?? '#' }}">
+                    <span class="notification-title d-block text-truncate fw-medium">
+                        {{ $notification->data['title'] ?? $notification->data['message'] ?? 'Notifikasi Baru' }}
+                    </span>
+                    <span class="notification-time text-muted small">
+                        <i class="bi bi-clock me-1"></i>{{ $notification->created_at->diffForHumans() }}
+                    </span>
+                </a>
+            @empty
+                <!-- Tampilan Jika Tidak Ada Notifikasi -->
+                <div class="dropdown-item text-center text-muted py-4">
+                    <i class="bi bi-bell-slash fs-4 d-block mb-2"></i>
+                    <small>Tidak ada notifikasi baru.</small>
+                </div>
+            @endforelse
+
+            <!-- Footer Notifikasi -->
+            @if(auth()->user()->notifications->count() > 0)
+                <a href="#" class="dropdown-item text-center text-primary fw-bold small py-2">
+                    Lihat Semua Notifikasi
+                </a>
+            @endif
           </div>
         </div>
 
+        <!-- DROPDOWN PENGATURAN AKUN -->
         <div class="dropdown">
           <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account settings" title="Account settings">
             <i class="bi bi-gear" aria-hidden="true"></i>

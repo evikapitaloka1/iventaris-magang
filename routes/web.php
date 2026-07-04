@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BorrowingController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +68,8 @@ Route::get('/borrowings/export/pdf', [BorrowingController::class, 'exportPdf'])-
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 
 // 3. Memuat rute autentikasi bawaan Breeze (Login, Register, Logout, dll)

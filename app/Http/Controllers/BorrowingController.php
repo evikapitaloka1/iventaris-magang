@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Borrowing;
 use App\Models\BorrowingDetail;
 use App\Models\Product;
+use App\Models\User; // Tambahan untuk memanggil data Admin
+use App\Notifications\NewPeminjamanNotification; // Tambahan class notifikasi admin
+use App\Notifications\BorrowingStatusUpdatedNotification; // Tambahan class notifikasi staff
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification; // Tambahan facade notifikasi
 
 class BorrowingController extends Controller
 {
@@ -134,6 +138,25 @@ class BorrowingController extends Controller
             ]);
         });
 
+        // ===============================================================
+        // KIRIM NOTIFIKASI KE ADMIN (Ada Peminjaman Baru)
+        // ===============================================================
+        try {
+            $pesan = "Permintaan peminjaman baru diajukan oleh " . Auth::user()->name;
+            $url = route('borrowings.index'); 
+
+            $admins = User::whereHas('role', function ($query) {
+                $query->where('name', 'Admin');
+            })->get();
+
+            if ($admins->count() > 0) {
+                Notification::send($admins, new NewPeminjamanNotification($pesan, $url));
+            }
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengirim notifikasi peminjaman: ' . $e->getMessage());
+        }
+        // ===============================================================
+
         return redirect()->route('borrowings.index')->with('success', 'Permintaan peminjaman berhasil diajukan, menunggu persetujuan admin.');
     }
 
@@ -167,6 +190,16 @@ class BorrowingController extends Controller
             $borrowing->update(['status' => self::STATUS_BORROWED]);
         });
 
+        // ===============================================================
+        // KIRIM NOTIFIKASI KE STAFF (APPROVE)
+        // ===============================================================
+        if ($borrowing->user) {
+            $pesan = "Hore! Permintaan peminjaman Anda telah di-APPROVE oleh Admin.";
+            $url = route('borrowings.index');
+            $borrowing->user->notify(new BorrowingStatusUpdatedNotification($pesan, $url));
+        }
+        // ===============================================================
+
         return redirect()->route('borrowings.index')->with('success', 'Peminjaman disetujui. Stok telah dikurangi.');
     }
 
@@ -183,9 +216,19 @@ class BorrowingController extends Controller
         }
 
         $borrowing->update([
-            'status'          => self::STATUS_REJECTED,
+            'status'           => self::STATUS_REJECTED,
             'rejection_reason' => $request->input('rejection_reason'),
         ]);
+
+        // ===============================================================
+        // KIRIM NOTIFIKASI KE STAFF (REJECT)
+        // ===============================================================
+        if ($borrowing->user) {
+            $pesan = "Maaf, permintaan peminjaman Anda di-REJECT oleh Admin.";
+            $url = route('borrowings.index');
+            $borrowing->user->notify(new BorrowingStatusUpdatedNotification($pesan, $url));
+        }
+        // ===============================================================
 
         return redirect()->route('borrowings.index')->with('success', 'Permintaan peminjaman ditolak.');
     }
@@ -235,6 +278,16 @@ class BorrowingController extends Controller
                 $product->increment('stock', $detail->qty);
             }
         });
+
+        // ===============================================================
+        // KIRIM NOTIFIKASI KE STAFF (RETURN)
+        // ===============================================================
+        if ($borrowing->user) {
+            $pesan = "Barang pinjaman Anda telah berhasil DIKEMBALIKAN dan diproses Admin.";
+            $url = route('borrowings.index');
+            $borrowing->user->notify(new BorrowingStatusUpdatedNotification($pesan, $url));
+        }
+        // ===============================================================
 
         return redirect()->route('borrowings.index')->with('success', 'Barang berhasil dikembalikan.');
     }
