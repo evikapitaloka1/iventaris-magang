@@ -38,7 +38,8 @@
 
     <!-- MENU STAFF & ADMIN -->
     @if(in_array(auth()->user()->role?->name, ['Admin', 'Staff']))
-    <a class="nav-link" href="#kelola-barang"> <!-- Ganti href sesuai route-mu -->
+ <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}"
+   href="{{ route('products.index') }}">
       <span class="nav-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
       <span class="nav-text">Kelola Barang</span>
     </a>

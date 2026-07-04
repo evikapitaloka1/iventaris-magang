@@ -19,7 +19,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Rute Master Data Barang (Otomatis membuat index, create, store, show, edit, update, destroy)
-    Route::resource('products', ProductController::class);
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::patch('/products/{product}', [ProductController::class, 'update']);
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/products/export/excel', [ProductController::class, 'exportExcel'])->name('products.export.excel');
+Route::get('/products/export/pdf', [ProductController::class, 'exportPdf'])->name('products.export.pdf');
 
     // Rute Modul Peminjaman Barang
     Route::get('/borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
@@ -46,9 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Rute Profile User (untuk melihat profile user lain)
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    // Jika menggunakan fungsi edit
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Route untuk update (sesuai form Anda)
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
