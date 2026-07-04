@@ -10,7 +10,8 @@ class BorrowingDetail extends Model
         'borrowing_id',
         'product_id',
         'qty',
-        'item_status'
+        'item_status',
+         'photo'
     ];
 
     public function borrowing()

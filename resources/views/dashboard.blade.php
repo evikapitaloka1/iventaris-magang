@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@include('profile.partials.low-stock-alert') 
 <main class="dashboard-content">
     <div class="container-fluid px-3 px-lg-4 py-4">
 

@@ -43,7 +43,8 @@
       <span class="nav-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
       <span class="nav-text">Kelola Barang</span>
     </a>
-    <a class="nav-link" href="#peminjaman"> <!-- Ganti href sesuai route-mu -->
+    <a class="nav-link {{ request()->routeIs('borrowings.*') ? 'active' : '' }}"
+   href="{{ route('borrowings.index') }}">
       <span class="nav-icon"><i class="bi bi-arrow-left-right" aria-hidden="true"></i></span>
       <span class="nav-text">Peminjaman</span>
     </a>

@@ -30,11 +30,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/products/export/excel', [ProductController::class, 'exportExcel'])->name('products.export.excel');
 Route::get('/products/export/pdf', [ProductController::class, 'exportPdf'])->name('products.export.pdf');
 
-    // Rute Modul Peminjaman Barang
-    Route::get('/borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
-    Route::get('/borrowings/create', [BorrowingController::class, 'create'])->name('borrowings.create');
-    Route::post('/borrowings', [BorrowingController::class, 'store'])->name('borrowings.store');
-    Route::patch('/borrowings/{borrowing}/return', [BorrowingController::class, 'returnItem'])->name('borrowings.return');
+
+    // Borrowings
+Route::get('/borrowings', [BorrowingController::class, 'index'])->name('borrowings.index');
+Route::get('/borrowings/create', [BorrowingController::class, 'create'])->name('borrowings.create');
+Route::post('/borrowings', [BorrowingController::class, 'store'])->name('borrowings.store');
+Route::get('/borrowings/{borrowing}', [BorrowingController::class, 'show'])->name('borrowings.show');
+Route::get('/borrowings/{borrowing}/edit', [BorrowingController::class, 'edit'])->name('borrowings.edit');
+Route::put('/borrowings/{borrowing}', [BorrowingController::class, 'update'])->name('borrowings.update');
+Route::delete('/borrowings/{borrowing}', [BorrowingController::class, 'destroy'])->name('borrowings.destroy');
+Route::patch('/borrowings/{borrowing}/return', [BorrowingController::class, 'returnItem'])->name('borrowings.return');
+Route::patch('/borrowings/{borrowing}/approve', [BorrowingController::class, 'approve'])->name('borrowings.approve');
+Route::patch('/borrowings/{borrowing}/reject', [BorrowingController::class, 'reject'])->name('borrowings.reject');
+ Route::get('/borrowings/export/excel', [BorrowingController::class, 'exportExcel'])->name('borrowings.export.excel');
+Route::get('/borrowings/export/pdf', [BorrowingController::class, 'exportPdf'])->name('borrowings.export.pdf');
 
     // Rute Profile (Bawaan instalasi Laravel Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

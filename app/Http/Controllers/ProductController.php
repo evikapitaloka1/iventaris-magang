@@ -106,39 +106,45 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Barang berhasil dihapus.');
     }
-   public function exportExcel()
+  public function exportExcel()
     {
-        $products = Product::with('category')->get();
-        $filename = "data_products.csv";
-        $handle = fopen('php://temp', 'r+'); // Membuka memori sementara
-        
-        // 1. Membuat Header Kolom
-        fputcsv($handle, ['No', 'Kode Produk', 'Nama Produk', 'Kategori', 'Stok', 'Lokasi', 'Kondisi']);
-
-        // 2. Memasukkan Data dari Database
+        $borrowings = Borrowing::with(['user', 'details.product'])->latest()->get();
+        $filename = "data_borrowings.csv";
+        $handle = fopen('php://temp', 'r+');
+ 
+        // 1. Header kolom
+        fputcsv($handle, ['No', 'Borrower', 'Email', 'Product(s)', 'Total Qty', 'Borrow Date', 'Due Date', 'Return Date', 'Status', 'Purpose']);
+ 
+        // 2. Isi data
         $no = 1;
-        foreach($products as $product) {
+        foreach ($borrowings as $borrowing) {
+            $products = $borrowing->details->map(function ($detail) {
+                return ($detail->product->name ?? 'Unknown') . ' (x' . $detail->qty . ')';
+            })->implode(', ');
+ 
             fputcsv($handle, [
                 $no++,
-                $product->product_code,
-                $product->name,
-                $product->category ? $product->category->name : 'Uncategorized',
-                $product->stock,
-                $product->location,
-                $product->condition
+                $borrowing->user->name ?? 'Unknown User',
+                $borrowing->user->email ?? '-',
+                $products,
+                $borrowing->details->sum('qty'),
+                $borrowing->borrow_date ? \Carbon\Carbon::parse($borrowing->borrow_date)->format('d M Y') : '-',
+                $borrowing->due_date ? \Carbon\Carbon::parse($borrowing->due_date)->format('d M Y') : '-',
+                $borrowing->return_date ? \Carbon\Carbon::parse($borrowing->return_date)->format('d M Y') : '-',
+                ucfirst($borrowing->status),
+                $borrowing->purpose ?? '-',
             ]);
         }
-
+ 
         rewind($handle);
         $csvData = stream_get_contents($handle);
         fclose($handle);
-
-        // 3. Mengirim File untuk Di-download
+ 
+        // 3. Kirim file untuk di-download
         return response($csvData)
             ->header('Content-Type', 'text/csv')
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
-
     public function exportPdf()
     {
         // Mengambil data produk beserta relasi kategori
