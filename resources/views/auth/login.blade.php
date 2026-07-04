@@ -24,10 +24,9 @@
         </a>
 
         <div class="auth-visual">
-            <img src="{{ asset('template/assets/images/png/dasher-ui-bootstrap-5.jpg') }}"
-                 alt="adminHMD dashboard interface">
-        </div>
-
+    <img src="{{ asset('images/logo_login.jpg') }}"
+         alt="INLIFE dashboard interface">
+</div>
         @if(session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}
