@@ -40,11 +40,11 @@
     @if(in_array(auth()->user()->role?->name, ['Admin', 'Staff']))
     <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">
       <span class="nav-icon"><i class="bi bi-box-seam" aria-hidden="true"></i></span>
-      <span class="nav-text">Kelola Barang</span>
+      <span class="nav-text">Manage Product</span>
     </a>
     <a class="nav-link {{ request()->routeIs('borrowings.*') ? 'active' : '' }}" href="{{ route('borrowings.index') }}">
       <span class="nav-icon"><i class="bi bi-arrow-left-right" aria-hidden="true"></i></span>
-      <span class="nav-text">Peminjaman</span>
+      <span class="nav-text">Borrowings</span>
     </a>
     @endif
 
@@ -52,7 +52,7 @@
     @if(in_array(auth()->user()->role?->name, ['Admin', 'Manager']))
     <a class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}" href="{{ route('reports.index') }}">
       <span class="nav-icon"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i></span>
-      <span class="nav-text">Laporan</span>
+      <span class="nav-text">Reports</span>
     </a>
     @endif
 
@@ -62,10 +62,7 @@
       <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
       <span class="nav-text">Users</span>
     </a>
-    <a class="nav-link {{ request()->routeIs('users.create') ? 'active' : '' }}" href="{{ route('users.create') }}">
-      <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
-      <span class="nav-text">Add User</span>
-    </a>
+   
     @endif
 
     <!-- MENU UMUM: Profil -->
@@ -154,7 +151,7 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="{{ route('profile.index') }}">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Account settings</a></li>
+            
             <li><hr class="dropdown-divider"></li>
             <li>
               <form method="POST" action="{{ route('logout') }}">

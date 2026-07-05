@@ -54,7 +54,8 @@
                         <span class="small fw-semibold">Total Products</span>
                         <i class="bi bi-box"></i>
                     </div>
-                    <div class="metric-value fs-3 fw-bold text-dark">
+                    <!-- Hapus text-dark -->
+                    <div class="metric-value fs-3 fw-bold">
                         {{ $products->total() }}
                     </div>
                     <div class="metric-meta small text-muted">
@@ -70,7 +71,8 @@
                         <i class="bi bi-boxes"></i>
                     </div>
                     {{-- Menghitung total stok dari koleksi paginasi --}}
-                    <div class="metric-value fs-3 fw-bold text-dark">
+                    <!-- Hapus text-dark -->
+                    <div class="metric-value fs-3 fw-bold">
                         {{ \App\Models\Product::sum('stock') }} 
                     </div>
                     <div class="metric-meta small text-muted">
@@ -85,7 +87,8 @@
                         <span class="small fw-semibold">Low Stock</span>
                         <i class="bi bi-exclamation-triangle"></i>
                     </div>
-                    <div class="metric-value fs-3 fw-bold text-dark">
+                    <!-- Hapus text-dark -->
+                    <div class="metric-value fs-3 fw-bold">
                         {{ \App\Models\Product::where('stock', '<=', 5)->count() }}
                     </div>
                     <div class="metric-meta small text-muted">
@@ -100,7 +103,8 @@
                         <span class="small fw-semibold">Out of Stock</span>
                         <i class="bi bi-x-circle"></i>
                     </div>
-                    <div class="metric-value fs-3 fw-bold text-dark">
+                    <!-- Hapus text-dark -->
+                    <div class="metric-value fs-3 fw-bold">
                         {{ \App\Models\Product::where('stock', 0)->count() }}
                     </div>
                     <div class="metric-meta small text-muted">
@@ -111,7 +115,8 @@
         </section>
 
         {{-- TABLE SECTION --}}
-        <section class="panel bg-white shadow-sm rounded border">
+        <!-- Hapus bg-white pada tag section di bawah -->
+        <section class="panel shadow-sm rounded border">
             
             {{-- Panel Header dengan Title & Search Bar --}}
             <div class="panel-header p-3 border-bottom d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
@@ -140,7 +145,8 @@
             {{-- Table Responsive --}}
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
+                    <!-- Hapus table-light pada thead -->
+                    <thead>
                         <tr>
                             <th class="ps-3">Image</th>
                             <th>Code</th>
@@ -162,14 +168,17 @@
                                              class="img-thumbnail border-0 shadow-sm" 
                                              style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
                                     @else
-                                        <div class="bg-light text-secondary d-flex align-items-center justify-content-center border" style="width: 50px; height: 50px; font-size: 10px; border-radius: 8px;">
+                                        <!-- Hapus bg-light -->
+                                        <div class="text-secondary d-flex align-items-center justify-content-center border" style="width: 50px; height: 50px; font-size: 10px; border-radius: 8px;">
                                             No Image
                                         </div>
                                     @endif
                                 </td>
-                                <td><span class="badge bg-light text-dark border">{{ $product->product_code }}</span></td>
+                                <!-- Hapus bg-light dan text-dark, ganti dengan text-body -->
+                                <td><span class="badge text-body border">{{ $product->product_code }}</span></td>
                                 <td class="fw-bold">
-                                    <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-dark">
+                                    <!-- Hapus text-dark -->
+                                    <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-body">
                                         {{ $product->name }}
                                     </a>
                                 </td>
@@ -191,7 +200,8 @@
                                 </td>
                                 <td>{{ $product->location }}</td>
                                 <td>
-                                    <span class="badge bg-light text-secondary border">{{ $product->condition }}</span>
+                                    <!-- Hapus bg-light -->
+                                    <span class="badge text-secondary border">{{ $product->condition }}</span>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm">
@@ -228,7 +238,8 @@
 
             {{-- Bagian Pagination --}}
             @if($products->hasPages())
-                <div class="panel-footer bg-light p-3 border-top d-flex flex-column flex-md-row justify-content-between align-items-center rounded-bottom">
+                <!-- Hapus bg-light dari panel-footer -->
+                <div class="panel-footer p-3 border-top d-flex flex-column flex-md-row justify-content-between align-items-center rounded-bottom">
                     <p class="text-muted mb-2 mb-md-0 small">
                         Showing <span class="fw-bold">{{ $products->firstItem() }}</span> to <span class="fw-bold">{{ $products->lastItem() }}</span> of <span class="fw-bold">{{ $products->total() }}</span> results
                     </p>

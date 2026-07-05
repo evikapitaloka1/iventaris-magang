@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="dashboard-content bg-light pb-5 min-vh-100">
+<!-- Hapus 'bg-light' agar background mengikuti CSS tema -->
+<main class="dashboard-content pb-5 min-vh-100">
     <div class="container-fluid px-3 px-lg-4 py-4">
 
         <!-- Page Heading -->
@@ -11,7 +12,8 @@
             </div>
             <div>
                 <p class="text-uppercase text-primary fw-bold mb-0" style="font-size: 0.75rem; letter-spacing: 1px;">Account</p>
-                <h1 class="h4 mb-0 fw-bold text-dark">Profile Management</h1>
+                <!-- Hapus 'text-dark' agar warna teks otomatis berubah -->
+                <h1 class="h4 mb-0 fw-bold">Profile Management</h1>
                 <p class="text-muted small mb-0">Manage your personal information and security.</p>
             </div>
         </div>
@@ -32,7 +34,6 @@
                     <div class="card-body text-center px-4 py-5">
                         
                         <!-- Avatar -->
-                        <!-- Avatar -->
                         <div class="position-relative d-inline-block mb-4">
                             @php
                                 $user = auth()->user();
@@ -46,9 +47,10 @@
                                 }
                             @endphp
                             
+                            <!-- Ubah border: 4px solid #f8f9fa; menjadi var(--admin-surface) -->
                             <img src="{{ $avatarPath }}" 
                                  class="rounded-circle shadow-sm object-fit-cover" 
-                                 style="width: 130px; height: 130px; border: 4px solid #f8f9fa;" 
+                                 style="width: 130px; height: 130px; border: 4px solid var(--admin-surface);" 
                                  alt="Profile Photo of {{ auth()->user()->name }}"
                                  onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&background=0d6efd&color=ffffff&size=130&bold=true';">
                         </div>
@@ -59,7 +61,6 @@
                         <ul class="list-group list-group-flush text-start mt-3">
                             <li class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 border-bottom bg-transparent pb-3">
                                 <span class="text-muted small fw-medium"><i class="bi bi-shield-check me-2 text-primary"></i>Role Level</span>
-                                <!-- Perbaikan di sini -->
                                 <strong class="small">{{ auth()->user()->role?->name ?? '-' }}</strong>
                             </li>
                             <li class="list-group-item px-0 d-flex justify-content-between align-items-center border-0 bg-transparent pt-3">
@@ -77,7 +78,8 @@
                 <!-- Update Profile Form -->
                 <div class="card shadow-sm border-0 mb-4 rounded-4">
                     <div class="card-header bg-transparent border-bottom p-4">
-                        <h4 class="h6 mb-0 fw-bold text-dark d-flex align-items-center">
+                        <!-- Hapus 'text-dark' -->
+                        <h4 class="h6 mb-0 fw-bold d-flex align-items-center">
                             <div class="bg-primary-subtle text-primary rounded-circle p-2 me-2 d-flex">
                                 <i class="bi bi-person-gear"></i>
                             </div>
@@ -97,7 +99,8 @@
                                     <label class="form-label small fw-bold text-muted text-uppercase">Profile Picture</label>
                                     <div class="input-group shadow-sm rounded-3">
                                         <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror" accept="image/jpeg, image/png, image/jpg">
-                                        <label class="input-group-text bg-light text-muted"><i class="bi bi-image"></i></label>
+                                        <!-- Hapus 'bg-light' pada input-group-text -->
+                                        <label class="input-group-text text-muted"><i class="bi bi-image"></i></label>
                                     </div>
                                     <div class="form-text small mt-2">Format yang diizinkan: JPG, JPEG, PNG. Maksimal 2MB.</div>
                                     @error('avatar')
@@ -109,7 +112,8 @@
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-muted text-uppercase">Full Name</label>
                                     <div class="input-group shadow-sm rounded-3">
-                                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+                                        <!-- Hapus 'bg-light' pada input-group-text -->
+                                        <span class="input-group-text border-end-0"><i class="bi bi-person text-muted"></i></span>
                                         <input type="text" name="name" class="form-control border-start-0 ps-0 @error('name') is-invalid @enderror" value="{{ old('name', auth()->user()->name) }}" required>
                                     </div>
                                     @error('name')
@@ -121,7 +125,8 @@
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-muted text-uppercase">Email Address</label>
                                     <div class="input-group shadow-sm rounded-3">
-                                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
+                                        <!-- Hapus 'bg-light' pada input-group-text -->
+                                        <span class="input-group-text border-end-0"><i class="bi bi-envelope text-muted"></i></span>
                                         <input type="email" name="email" class="form-control border-start-0 ps-0 @error('email') is-invalid @enderror" value="{{ old('email', auth()->user()->email) }}" required>
                                     </div>
                                     @error('email')
@@ -142,7 +147,8 @@
                 <!-- Update Password Form -->
                 <div class="card shadow-sm border-0 rounded-4">
                     <div class="card-header bg-transparent border-bottom p-4">
-                        <h4 class="h6 mb-0 fw-bold text-dark d-flex align-items-center">
+                        <!-- Hapus 'text-dark' -->
+                        <h4 class="h6 mb-0 fw-bold d-flex align-items-center">
                             <div class="bg-success-subtle text-success rounded-circle p-2 me-2 d-flex">
                                 <i class="bi bi-shield-lock"></i>
                             </div>

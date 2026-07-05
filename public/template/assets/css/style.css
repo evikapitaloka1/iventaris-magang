@@ -127,6 +127,7 @@ a {
   min-height: 100vh;
 }
 
+
 /* =========================================
    3. SIDEBAR (FIXED DARK/LIGHT MODE)
 ========================================= */
@@ -963,7 +964,7 @@ html[data-theme="dark"] .profile-button .avatar-sm {
   background: #ffffff; color: var(--admin-text); font-size: 1.65rem; font-weight: 800;
 }
 html[data-theme="dark"] .donut-chart span {
-    background: var(--admin-surface); /* Menyesuaikan lubang donut di dark mode */
+    background: var(--admin-surface);
 }
 
 .legend-list div { padding: 0.75rem 0.85rem; }
@@ -1023,7 +1024,6 @@ html[data-theme="dark"] .auth-body {
 /* =========================================
    9. BOOTSTRAP OVERRIDES FOR DARK MODE
 ========================================= */
-/* Sangat penting agar box putih di dashboard hilang pada Dark Mode */
 .dropdown-menu, .dropdown-item, .accordion-body {
   color: var(--admin-text);
 }
@@ -1033,18 +1033,56 @@ html[data-theme="dark"] .auth-body {
 }
 .text-muted { color: var(--admin-muted) !important; }
 
-html[data-theme="dark"] .bg-white { background-color: var(--admin-surface) !important; }
+/* Override bg-white & cards */
+html[data-theme="dark"] .bg-white { 
+    background-color: var(--admin-surface) !important; 
+    color: var(--admin-text) !important;
+}
 html[data-theme="dark"] .card, 
 html[data-theme="dark"] .list-group-item {
     background-color: var(--admin-surface);
     border-color: var(--admin-border);
     color: var(--admin-text);
 }
+
+/* Fix text elements forced to be dark */
 html[data-theme="dark"] .text-dark,
-html[data-theme="dark"] .text-body {
+html[data-theme="dark"] .text-body,
+html[data-theme="dark"] h1, 
+html[data-theme="dark"] h2, 
+html[data-theme="dark"] h3, 
+html[data-theme="dark"] h4, 
+html[data-theme="dark"] .page-title {
     color: var(--admin-text) !important;
 }
 html[data-theme="dark"] .border { border-color: var(--admin-border) !important; }
+
+/* Override table headers */
+html[data-theme="dark"] .table-light,
+html[data-theme="dark"] .table thead,
+html[data-theme="dark"] .table thead th {
+    background-color: var(--admin-surface-soft) !important;
+    color: var(--admin-muted) !important;
+    border-color: var(--admin-border) !important;
+}
+
+/* FIX UNTUK NOTIFIKASI UNREAD DI DARK MODE */
+html[data-theme="dark"] .notification-menu .dropdown-item.bg-light {
+    background-color: var(--admin-surface-soft) !important;
+    color: var(--admin-text) !important;
+}
+html[data-theme="dark"] .notification-menu .dropdown-item.bg-light .notification-title {
+    color: var(--admin-text) !important;
+}
+html[data-theme="dark"] .notification-menu .dropdown-item.bg-light .notification-time {
+    color: var(--admin-muted) !important;
+}
+/* Memastikan wrapper utama tidak tersangkut warna putih */
+html[data-theme="dark"] .admin-content-wrapper {
+    background-color: transparent !important;
+}
+
+/* Badge & Alert Utility overrides */
 html[data-theme="dark"] .text-bg-secondary { background-color: #334155 !important; color: #e5edf7 !important; }
 html[data-theme="dark"] .text-bg-info { background-color: #0e7490 !important; color: #ecfeff !important; }
 html[data-theme="dark"] .text-bg-warning { background-color: #b45309 !important; color: #fff7ed !important; }

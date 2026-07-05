@@ -134,13 +134,7 @@
                     </p>
                 </div>
 
-                <a href="{{ route('borrowings.create') }}"
-                   class="btn btn-primary btn-sm">
-
-                    <i class="bi bi-plus-circle"></i>
-                    Add Borrowing
-
-                </a>
+                
 
             </div>
 

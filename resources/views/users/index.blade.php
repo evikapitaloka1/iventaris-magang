@@ -121,13 +121,7 @@
                     </p>
                 </div>
 
-                <a href="{{ route('users.create') }}"
-                   class="btn btn-primary btn-sm">
-
-                    <i class="bi bi-person-plus"></i>
-                    Add User
-
-                </a>
+               
 
             </div>
 
